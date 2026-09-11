@@ -21,13 +21,57 @@ def get_connection():
         st.error(f"Gagal terhubung ke Database MySQL: {err}")
         return None
 
-# Sidebar Navigasi
-st.sidebar.title("Rentalinaja")
-st.sidebar.subheader("Sistem Manajemen Rental Mobil")
-menu = st.sidebar.selectbox(
-    "Pilih Menu",
-    ["Kelola Penyewa", "Kelola Mobil", "Transaksi Rental"]
-)
+# ---------------------------------------------------------
+# SISTEM LOGIN (SESSION STATE)
+# ---------------------------------------------------------
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+# Akun sederhana (Bisa dikembangkan menggunakan tabel pengguna di MySQL)
+USER_CREDENTIALS = {
+    "admin": "admin123",
+    "dimas": "rentalinaja123"
+}
+
+# TAMPILAN 1: FORM LOGIN (JIKA BELUM LOGIN)
+if not st.session_state.logged_in:
+    st.markdown("<h1 style='text-align: center;'>Rentalinaja System</h1>", unsafe_allow_html=True)
+    st.markdown("<h4 style='text-align: center;'>Silakan Login untuk Mengakses Dashboard</h4>", unsafe_allow_html=True)
+    st.write("")
+
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        with st.form("form_login", clear_on_submit=False):
+            username_input = st.text_input("Username")
+            password_input = st.text_input("Password", type="password")
+            btn_login = st.form_submit_button("Masuk", use_container_width=True)
+
+            if btn_login:
+                if username_input in USER_CREDENTIALS and USER_CREDENTIALS[username_input] == password_input:
+                    st.session_state.logged_in = True
+                    st.session_state.username = username_input
+                    st.success("Login Berhasil!")
+                    st.rerun()
+                else:
+                    st.error("Username atau Password salah!")
+
+# TAMPILAN 2: UTAMA APLIKASI (JIKA SUDAH LOGIN)
+else:
+    # Sidebar Header & Info User
+    st.sidebar.title("Rentalinaja")
+    st.sidebar.write(f"Pengguna: **{st.session_state.username}**")
+    
+    # Tombol Logout
+    if st.sidebar.button("Logout", type="secondary"):
+        st.session_state.logged_in = False
+        st.rerun()
+
+    st.sidebar.markdown("---")
+    
+    menu = st.sidebar.selectbox(
+        "Pilih Menu",
+        ["Kelola Penyewa", "Kelola Mobil", "Transaksi Rental"]
+    )
 
 # ---------------------------------------------------------
 # MENU 1: KELOLA PENYEWA
