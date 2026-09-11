@@ -126,7 +126,7 @@ else:
 
     st.sidebar.markdown("---")
     
-    # Deklarasi variabel 'menu' (sekarang sudah ada di dalam blok else)
+    # Deklarasi variabel 'menu'
     menu = st.sidebar.selectbox(
         "Pilih Menu",
         ["Kelola Penyewa", "Kelola Mobil", "Transaksi Rental"]
