@@ -5,7 +5,6 @@ import pandas as pd
 # Konfigurasi Halaman Streamlit
 st.set_page_config(
     page_title="Rentalinaja - Car Rental System",
-    page_icon="🚗",
     layout="wide"
 )
 
@@ -72,7 +71,7 @@ if menu == "Kelola Penyewa":
         
         # Form Hapus Penyewa
         if not df_penyewa.empty:
-            with st.expander("🗑️ Hapus Data Penyewa"):
+            with st.expander("Hapus Data Penyewa"):
                 penyewa_opt = {f"{row['id_penyewa']} - {row['nama']}": row['id_penyewa'] for _, row in df_penyewa.iterrows()}
                 pilihan_hapus = st.selectbox("Pilih Penyewa yang Ingin Dihapus", list(penyewa_opt.keys()))
                 if st.button("Hapus Penyewa", type="primary"):
